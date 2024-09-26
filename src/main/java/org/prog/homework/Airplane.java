@@ -1,8 +1,37 @@
 package org.prog.homework;
 
-//TODO: add air company and flight number
-//TODO: add hash code and equals that will compare company name and flight number
-//TODO: add overload flyTo: destination, startAriport, transitAirport and print:
-// Flight (flightNumber) of comapny (comapny) from to through
 public class Airplane {
+
+  private String name;
+  private String code;
+
+  public Airplane (String name , String code ) {
+    this.name = name ;
+    this.code = code ;
+  }
+
+
+  public String getName() {
+    return name  ;
+  }
+
+  public String getCode() {
+    return code ;
+  }
+
+  @Override
+  public String toString() {
+    return "Airplane: " + name  + "(Code: " + code  +")";
+  }
+
+  public static class Main {
+      public static void main(String[] args) {
+          Airplane airplane = new Airplane("Bergamo", "SU"); //
+          Flight flight = new Flight(airplane, "SU-6566"); //
+
+          System.out.println(airplane);
+          System.out.println(flight);
+          flight.printFlightDetails("Venice", " Stuttgart", "Berne");
+      }
+  }
 }
