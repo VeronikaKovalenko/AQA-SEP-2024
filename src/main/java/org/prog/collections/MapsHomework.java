@@ -21,6 +21,7 @@ public class MapsHomework {
         Car car2 = new Car("Coupe", "blue");
         Car car3 = new Car("SUV", "green");
 
+        Map<CarOwner, List<Car>> registry = Map.of();
         registerCar(registry, owner1, car1);
         registerCar(registry, owner1, car2);
         registerCar(registry, owner2, car1);
