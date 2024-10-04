@@ -25,9 +25,7 @@ public class Main {
 
         for (String car : cars) {
             if (car.contains("(red)")) {
-                redCars.add(car);
-            } else if (car.contains("(green)")) {
-                greenCars.add(car);
+                redCars.add(car);    greenCars.add(car);
             } else if (car.contains("(blue)")) {
                 blueCars.add(car);
             }
