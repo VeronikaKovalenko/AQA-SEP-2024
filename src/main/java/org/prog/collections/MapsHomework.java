@@ -1,35 +1,60 @@
 package org.prog.collections;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 //TODO: create Map which will allow you to track car owners and cars they own
 //TODO: At least one car must be owned by two owners
 //TODO: print owners that share cars
 public class MapsHomework {
 
-
     public static void main(String[] args) {
-        Map<CarOwner, List<Car>> ownerCarMap = new HashMap<>();
-
-        CarOwner owner1 = createCarOwner("Olya", "Polykova", "123-456-7890");
+        Car coOwnedCar = new Car("red");
+        CarOwner owner1 = createCarOwner("Olya", "Polykova", "748-942-6425");
         CarOwner owner2 = createCarOwner("Nika", "Tarasuik", "987-654-3210");
-        CarOwner owner3 =createCarOwner("Dima", "Petrenko", "555-123-4567");
+        CarOwner owner3 = createCarOwner("Dima", "Petrenko", "555-123-4567");
 
-        Car car1 = new Car("Sedan", "red");
-        Car car2 = new Car("Coupe", "blue");
-        Car car3 = new Car("SUV", "green");
 
-        Map<CarOwner, List<Car>> registry = Map.of();
-        registerCar(registry, owner1, car1);
-        registerCar(registry, owner1, car2);
-        registerCar(registry, owner2, car1);
-        registerCar(registry, owner3, car3);
+        Map<CarOwner, Set<Car>> ownersAndCars = new HashMap<>();
+        ownersAndCars.put(owner1, new HashSet<>());
+        ownersAndCars.put(owner2, new HashSet<>());
+        ownersAndCars.put(owner3, new HashSet<>());
 
-        showOwnerCars(registry);
-        findSharedCars(registry);
+
+        ownersAndCars.get(owner1).add(coOwnedCar);
+        ownersAndCars.get(owner2).add(coOwnedCar);
+
+        ownersAndCars.get(owner1).add(new Car("blue"));
+        ownersAndCars.get(owner2).add(new Car("green"));
+        ownersAndCars.get(owner3).add(new Car("yellow"));
+
+
+        Set<CarOwner> ownersOfSeveralCars = new HashSet<>();
+        List<Car> allCars = new ArrayList<>();
+
+        for (Set<Car> cars : ownersAndCars.values()) {
+            allCars.addAll(cars);
+        }
+
+        Set<Car> coOwnedCars = new HashSet<>();
+        for (Car car : allCars) {
+            if (Collections.frequency(allCars, car) > 1) {
+                coOwnedCars.add(car);
+            }
+        }
+
+
+        for (Map.Entry<CarOwner, Set<Car>> entry : ownersAndCars.entrySet()) {
+            for (Car carWithMultipleOwners : coOwnedCars) {
+                if (entry.getValue().contains(carWithMultipleOwners)) {
+                    ownersOfSeveralCars.add(entry.getKey());
+                }
+            }
+        }
+
+        for (CarOwner owner : ownersOfSeveralCars) {
+            System.out.println(owner.firstName + " " + owner.lastName);
+        }
     }
+
 
     public static CarOwner createCarOwner(String firstName, String lastName, String phoneNumber) {
         CarOwner owner = new CarOwner();
@@ -38,36 +63,21 @@ public class MapsHomework {
         owner.phoneNumber = phoneNumber;
         return owner;
     }
-
-    private static void registerCar(Map<CarOwner, List<Car>> registry, CarOwner owner, Car car) {
-        registry.computeIfAbsent(owner, o -> new ArrayList<>()).add(car);
-    }
-
-    private static void showOwnerCars(Map<CarOwner, List<Car>> registry) {
-        System.out.println("List of owners and their cars:");
-        for (Map.Entry<CarOwner, List<Car>> entry : registry.entrySet()) {
-            CarOwner owner = entry.getKey();
-            List<Car> cars = entry.getValue();
-            System.out.println(owner + " owns the following cars: " + cars);
-        }
-    }
-
-    private static void findSharedCars(Map<CarOwner, List<Car>> registry) {
-        Map<Car, List<CarOwner>> carToOwnerMap = new HashMap<>();
-        for (Map.Entry<CarOwner, List<Car>> entry : registry.entrySet()) {
-            CarOwner owner = entry.getKey();
-            List<Car> cars = entry.getValue();
-            for (Car car : cars) {
-                carToOwnerMap.computeIfAbsent(car, c -> new ArrayList<>()).add(owner);
-            }
-        }
-        System.out.println("\nCars owned by multiple people:");
-        for (Map.Entry<Car, List<CarOwner>> entry : carToOwnerMap.entrySet()) {
-            Car car = entry.getKey();
-            List<CarOwner> owners = entry.getValue();
-            if (owners.size() > 1) {
-                System.out.println(car + " is shared by these owners: " + owners);
-            }
-        }
-    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
