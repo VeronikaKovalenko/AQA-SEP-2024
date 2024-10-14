@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
-    private String gender;
-    private String nat;
-    private NameDto name;
-    private Location location;
+public class Coordinates {
+    private String latitude;
+    private String longitude;
 }

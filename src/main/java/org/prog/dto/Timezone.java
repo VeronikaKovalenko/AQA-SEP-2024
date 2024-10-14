@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
-    private String gender;
-    private String nat;
-    private NameDto name;
-    private Location location;
+public class Timezone {
+    private String offset;
+    private String description;
 }
